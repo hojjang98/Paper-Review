@@ -111,4 +111,81 @@ This structure is efficient, expressive, and well-suited for mobile inference.
 > 📝 Notes:  
 > Day 3 will explore experimental results, ablations, and comparison with other models like MobileNetV1 and ShuffleNet.
 
+## ✅ Day 3 – Experiments, Applications, and Conclusions
+
+### 📌 Step 1: Architecture Details & Expansion
+
+MobileNetV2 uses a repeating bottleneck block structure composed of:
+
+```bash
+1×1 Conv (Expansion, ReLU6)
+→ 3×3 Depthwise Conv (Stride s, ReLU6)
+→ 1×1 Conv (Linear Projection)
+→ (+ Residual connection if stride = 1 and input/output dims match)
+```
+
+- Expansion factor `t` is typically set to **6**  
+- Depthwise convolutions reduce computation drastically  
+- Linear projection prevents information loss on low-dimensional manifolds  
+- The network uses **19 such blocks** after an initial 3×3 Conv layer  
+- **Dropout** and **Batch Normalization** are used during training  
+- All kernels are 3×3; width multiplier and input resolution allow scaling
+
+---
+
+### 📌 Step 2: Experimental Results
+
+#### 📍 Classification (ImageNet):
+| Model | Top-1 Acc | MACs | Params |
+|-------|-----------|------|--------|
+| MobileNetV1 | 70.6% | 575M | 4.2M |
+| **MobileNetV2** | **71.8%** | **300M** | **3.4M** |
+
+- Despite using almost half the computation of V1, V2 achieves better accuracy
+
+#### 📍 Object Detection (COCO, with SSDLite):
+| Model | mAP | Latency |
+|-------|-----|---------|
+| MobileNetV1 + SSD | 19.3 | 27 ms |
+| **MobileNetV2 + SSDLite** | **22.1** | **19 ms** |
+
+- V2 achieves **higher accuracy and lower latency**
+
+#### 📍 Memory Usage (Table 3):
+- At all spatial resolutions, MobileNetV2 uses **the least memory** (Max = 400K)
+- Ideal for low-memory mobile or edge devices
+
+---
+
+### 📌 Step 3: Real-World Applications
+
+1. **SSDLite for Object Detection**  
+   → Efficient mobile detector with better accuracy and lower latency  
+2. **DeepLabv3 for Semantic Segmentation**  
+   → Enables real-time segmentation with reduced computational load  
+3. **Transfer Learning**  
+   → Pretrained MobileNetV2 is widely used across CV tasks and mobile apps
+
+---
+
+### 📌 3-Line Summary
+
+- MobileNetV2 delivers strong performance with minimal computation and memory usage.
+- It improves upon V1 by introducing Inverted Residuals and Linear Bottlenecks.
+- The architecture proves effective across classification, detection, and segmentation.
+
+---
+
+### 📌 Unfamiliar Terms
+- **mAP (mean Average Precision)**: Measures detection accuracy across multiple IoU thresholds (COCO uses 0.5–0.95).
+- **Width Multiplier**: A hyperparameter to scale model width (number of channels).
+- **Materialized Memory**: Intermediate tensor storage needed during inference.
+
+---
+
+> 📝 Notes:  
+> MobileNetV2 shows that with careful design, deep learning models can be both efficient and accurate.  
+> Day 4 may explore successors like ShuffleNetV2 or EfficientNet.
+
+
 
