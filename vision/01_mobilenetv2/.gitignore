@@ -1,0 +1,59 @@
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode & PyCharm
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook output
+*.ipynb_checkpoints
+*.nbconvert.ipynb
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.venv/
+venv/
+env/
+ENV/
+*.env
+
+# Data
+data/
+*.csv
+*.tsv
+*.json
+*.xlsx
+*.h5
+*.npy
+*.npz
+*.pkl
+
+# Model checkpoints
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.joblib
+
+# Logs and TensorBoard
+*.log
+*.out
+*.err
+events.out.tfevents.*
+
+# Other
+*.bak
+*.swp
+*.tmp
+
+# GitHub Pages (optional)
+_site/

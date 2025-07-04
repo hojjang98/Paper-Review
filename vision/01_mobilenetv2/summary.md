@@ -187,5 +187,45 @@ MobileNetV2 uses a repeating bottleneck block structure composed of:
 > MobileNetV2 shows that with careful design, deep learning models can be both efficient and accurate.  
 > Day 4 may explore successors like ShuffleNetV2 or EfficientNet.
 
+## ✅ TL;DR
+
+MobileNetV2 is a highly efficient architecture for mobile and edge devices.  
+Its design — combining **Inverted Residuals** and **Linear Bottlenecks** — enables low-latency inference with minimal performance trade-offs.  
+It outperforms its predecessor (MobileNetV1) across classification, detection, and segmentation tasks, all while cutting down memory and computation.
+
+---
+
+## 🛠️ Today's Implementation
+
+- Built a **custom MobileNetV2 block** from scratch using PyTorch  
+- Included key components:  
+   Expansion (1×1 Conv + ReLU6)  
+   Depthwise Conv (3×3 + ReLU6)  
+   Projection (1×1 Linear Conv)  
+   Optional residual connection when `stride=1` and in/out dims match  
+- Verified the shape flow and block behavior with unit testing
+
+> 📁 File: `MobileNetV2_Architecture_Implementation.ipynb`  
+> 📂 Data dir: `./data/` (for future experiments)
+
+---
+
+## 🔜 Next Steps
+
+- 🔍 **Explore MobileNetV3 and EfficientNet** for improvements over MobileNetV2  
+- 🧪 **Reproduce training on a custom dataset** using V2 blocks  
+- 🧱 **Implement and test variations**: change width multipliers, try ReLU vs. ReLU6, test without residuals  
+- 🧠 **Compare with ShuffleNetV2** in terms of speed vs. accuracy trade-offs
+
+---
+
+## 💬 Final Thoughts
+
+MobileNetV2 strikes a fine balance between performance and efficiency.  
+For real-world, mobile-first CV applications, it remains a **gold standard** architecture.  
+Going forward, I plan to **experiment with variants**, apply them to **custom datasets**, and explore **newer architectures** to deepen my practical understanding.
+
+
+
 
 
