@@ -7,18 +7,38 @@
 
 ---
 
-## ✅ Day 1 – Overview & Purpose
+## ✅ Day 0 – Why I Chose This Paper
+
+### 📌 Background & Motivation
+
+After reading **MobileNetV2**, I was curious about what came next in the evolution of efficient CNNs.  
+MobileNetV2 introduced **inverted residual blocks** and showed how to design lightweight architectures for mobile and edge devices.
+
+While searching for the next step in the family tree, I discovered **EfficientNet**, which:
+
+- Builds directly on MobileNetV2’s design principles  
+- Proposes a novel **compound scaling** strategy to scale depth, width, and resolution **together**  
+- Uses **Neural Architecture Search (NAS)** to discover a strong baseline model (EfficientNet-B0)  
+- Achieves **SOTA accuracy** with significantly fewer FLOPs and parameters
+
+This made it the **perfect follow-up paper** to dive into.
+
+---
+
+## ✅ Day 1 – Abstract, Introduction & Motivation
 
 ### 📌 Abstract Summary
+
 EfficientNet introduces a new family of CNN models that balance accuracy and efficiency by proposing a **compound scaling method**.  
 Instead of scaling network depth, width, or resolution arbitrarily, it scales all three dimensions **uniformly** based on a fixed set of coefficients.  
-The base model EfficientNet-B0 is discovered using **Neural Architecture Search**, and larger variants (B1–B7) are derived via compound scaling.  
+The base model EfficientNet-B0 is discovered using **Neural Architecture Search**, and larger variants (B1–B7) are derived via compound scaling.
 
 EfficientNet models achieve **state-of-the-art accuracy** with **significantly fewer parameters and FLOPs**, making them ideal for both cloud and edge deployment.
 
 ---
 
 ### 📌 Introduction Insights
+
 - Prior CNN models improved accuracy by simply **making networks deeper or wider**, which leads to inefficient computation.  
 - EfficientNet solves this by introducing a **principled method** to scale all model dimensions together.  
 - Compound scaling maintains a balance across depth, width, and resolution, leading to better accuracy and efficiency.  
@@ -28,7 +48,8 @@ EfficientNet models achieve **state-of-the-art accuracy** with **significantly f
 
 ### 📌 Problem Statement
 
-Most existing scaling methods focus on only **one** dimension:  
+Most existing scaling methods focus on only **one** dimension:
+
 - Increase **depth** → may suffer from vanishing gradients  
 - Increase **width** → higher memory usage  
 - Increase **resolution** → higher computation cost  
@@ -65,15 +86,10 @@ This leads to a family of EfficientNet-B1 to B7.
 ---
 
 ### 📌 Unfamiliar Terms
+
 - **Compound scaling**: A method to jointly scale multiple model dimensions with a single coefficient φ.  
 - **Neural Architecture Search (NAS)**: An automated way to design neural networks optimized for accuracy and efficiency.  
 - **FLOPs**: Floating Point Operations — a measure of computational cost.
-
----
-
-> 📝 Notes:  
-> This summary covers the high-level idea and design motivation.  
-> In **Day 2**, I will explore the EfficientNet-B0 architecture in detail and break down the scaling factors and actual block design.
 
 ---
 
@@ -91,4 +107,3 @@ Its ideas are simple yet powerful, and widely used in modern vision models and r
 - 🔢 **Analyze α, β, γ scaling constants** for B1–B7  
 - 🧪 **Reproduce scaling formula in code** and visualize block layout  
 - 📊 **Compare** EfficientNet vs. MobileNetV2 vs. ResNet-50 (in terms of FLOPs / accuracy)
-
