@@ -63,15 +63,18 @@ EfficientNet introduces a **compound coefficient φ** and a method to uniformly 
 
 1. **Search for a good baseline (EfficientNet-B0)** using Neural Architecture Search  
 2. **Scale it up** with fixed scaling constants:  
-   \[
-   \text{depth} \propto \alpha^\phi,\quad 
-   \text{width} \propto \beta^\phi,\quad 
-   \text{resolution} \propto \gamma^\phi
-   \]  
-3. Maintain resource constraint:  
-   \[
-   \alpha \cdot \beta^2 \cdot \gamma^2 \approx 2 \quad \text{(to double FLOPs per φ)}
-   \]
+
+$$
+\text{depth} \propto \alpha^\phi,\quad 
+\text{width} \propto \beta^\phi,\quad 
+\text{resolution} \propto \gamma^\phi
+$$
+
+3. Maintain resource constraint:
+
+$$
+\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2 \quad \text{(to double FLOPs per } \phi \text{)}
+$$
 
 This leads to a family of EfficientNet-B1 to B7.
 
