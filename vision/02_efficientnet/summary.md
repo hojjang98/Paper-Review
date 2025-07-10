@@ -104,9 +104,78 @@ Its ideas are simple yet powerful, and widely used in modern vision models and r
 
 ---
 
-## 🔜 Next Steps
+---
 
-- 🧱 **Dissect EfficientNet-B0 architecture**: stem → MBConv blocks → final layers  
-- 🔢 **Analyze α, β, γ scaling constants** for B1–B7  
-- 🧪 **Reproduce scaling formula in code** and visualize block layout  
-- 📊 **Compare** EfficientNet vs. MobileNetV2 vs. ResNet-50 (in terms of FLOPs / accuracy)
+## ✅ Day 2 – Motivation Experiments & Compound Scaling
+
+### 📌 Motivation by Experiments (Section 3)
+
+EfficientNet experimentally evaluates how scaling only one dimension—depth, width, or resolution—affects model performance. The results clearly show **diminishing returns** when scaling is unbalanced.
+
+#### 📊 Summary of Figure 2
+
+| Subfigure | Experiment            | Summary |
+|-----------|------------------------|---------|
+| (a)       | Baseline               | EfficientNet-B0 from NAS |
+| (b)       | Width only             | Early gains, but performance plateaus quickly |
+| (c)       | Depth only             | Gradual improvement, but saturates after a point |
+| (d)       | Resolution only        | Accuracy drops at very high input sizes due to noise/overfitting |
+
+#### ⚠️ Key Insights
+
+- **Depth**: Vanishing gradients, optimization challenges  
+- **Width**: Better for fine-grained features, but lacks high-level semantics when overly wide  
+- **Resolution**: Too large input → noise and computational overload
+
+> ❗ Each single-axis scaling shows limited benefit → efficient scaling needs all three dimensions to grow **together**.
+
+---
+
+### 📌 Compound Scaling Formula (Section 4.1)
+
+EfficientNet proposes **compound scaling**, a principled way to scale **depth, width, and resolution simultaneously**.
+
+#### 🧮 Formula
+
+$$
+\text{depth} \propto \alpha^{\phi}, \quad 
+\text{width} \propto \beta^{\phi}, \quad 
+\text{resolution} \propto \gamma^{\phi}
+$$
+
+- **α**: depth factor  
+- **β**: width factor  
+- **γ**: resolution factor  
+- **φ (phi)**: user-defined compound coefficient → how much to scale the model
+
+#### 🔒 FLOPs Constraint
+
+$$
+\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2
+$$
+
+- Ensures FLOPs double with each step φ → **computational budget grows steadily**
+- β and γ are squared because width and resolution each affect FLOPs **quadratically**
+
+#### 🧠 What φ Means
+
+- φ = 0 → base model (EfficientNet-B0)  
+- φ = 1 → depth ×α, width ×β, resolution ×γ  
+- φ = 2 → depth ×α², etc.  
+→ FLOPs grow roughly as: $$\text{FLOPs} \approx 2^{\phi}$$
+
+---
+
+### 💬 Quick Recap Q&A
+
+- **Q: Why not just scale depth?**  
+  A: Gradient vanishing, slow improvements
+
+- **Q: Why not just scale resolution?**  
+  A: Too large → noise, memory issues
+
+- **Q: Why use α, β, γ?**  
+  A: To balance scaling across model dimensions with fixed resources
+
+---
+
