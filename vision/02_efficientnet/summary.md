@@ -179,3 +179,81 @@ $$
 
 ---
 
+## ✅ Day 3 – EfficientNet-B0 Architecture & Scaling Coefficients
+
+### 📌 How EfficientNet-B0 Was Designed
+
+EfficientNet-B0 was not manually designed — it was discovered using **Neural Architecture Search (NAS)**.  
+The search was conducted in the **MnasNet search space**, but with a larger target FLOPs (400M).  
+The optimization objective balances accuracy and efficiency:
+
+$$
+\text{Objective} = \text{ACC}(M) \cdot \left( \frac{\text{FLOPs}(M)}{T} \right)^w
+$$
+
+- \( T = 400M \): FLOPs target  
+- \( w = -0.07 \): trade-off weight between accuracy and resource usage
+
+---
+
+### ⚙️ Architecture Details: MBConv + SE
+
+EfficientNet-B0 primarily uses **MBConv blocks** (Mobile Inverted Bottlenecks) with **Squeeze-and-Excitation (SE)** modules for better feature calibration.
+
+#### 🔧 Core Elements:
+- **MBConv1** used only in early stage (expansion ratio = 1)
+- **MBConv6** used elsewhere (expansion ratio = 6)
+- **SE modules** improve channel-wise feature importance
+- **Skip connections** applied when:
+  - Stride = 1  
+  - Input and output shapes match
+
+This design keeps the model lightweight yet expressive.
+
+---
+
+### 📐 Compound Coefficients: α, β, γ
+
+After designing B0, the authors use a **grid search** to find the best scaling coefficients for:
+
+- \( \alpha = 1.2 \): depth  
+- \( \beta = 1.1 \): width  
+- \( \gamma = 1.15 \): resolution
+
+Subject to the constraint:
+
+$$
+\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2
+$$
+
+This ensures that **each increment in φ roughly doubles FLOPs**.  
+Why squared? Because both width and resolution affect computation quadratically.
+
+---
+
+### 💡 Why Use Small-Model Search?
+
+Searching (α, β, γ) on large models is **expensive**.  
+So the authors find them using **EfficientNet-B0**, and **reuse them** for all other models (B1–B7).  
+This keeps the search cost low, while allowing consistent and scalable expansion.
+
+---
+
+### 📌 Recap Takeaways
+
+- EfficientNet-B0 is a compact, NAS-optimized architecture using MBConv and SE blocks  
+- Compound scaling applies α, β, γ to scale all dimensions **uniformly**  
+- The constraint \( \alpha \cdot \beta^2 \cdot \gamma^2 \approx 2 \) ensures **predictable FLOPs growth**  
+- Coefficients are found once on B0, and reused for larger EfficientNet variants
+
+---
+
+### 🧠 Personal Reflection
+
+What stood out today was how **elegant and scalable** the design is.  
+Instead of manually tuning every model, EfficientNet finds a good baseline and then grows it using **simple math**.  
+This makes it both **theoretically sound and practically efficient** — a rare combo in model design.
+
+---
+
+
