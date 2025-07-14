@@ -257,3 +257,47 @@ This makes it both **theoretically sound and practically efficient** — a rare 
 ---
 
 
+## ✅ Day 4 – Scaling Results (Section 4.3 & Table 2)
+
+### 📌 Purpose of This Section
+
+The authors demonstrate that their **compound scaling method** consistently outperforms other popular models across a wide range of sizes — from small mobile models to large server-grade models.  
+This section validates the **effectiveness and generality** of EfficientNet across different FLOPs budgets.
+
+---
+
+### 📊 Table 2 Summary: ImageNet Top-1 Accuracy vs. FLOPs
+
+| Model             | Top-1 Accuracy | Params | FLOPs | Notes |
+|------------------|----------------|--------|-------|-------|
+| ResNet-50        | 76.3%          | 25.6M  | 4.1B  | Strong baseline |
+| ResNet-101       | 77.4%          | 44.5M  | 7.8B  | Larger ResNet |
+| GPipe-1          | 84.3%          | 556M   | 591B  | Extremely large |
+| EfficientNet-B0  | 77.1%          | 5.3M   | 0.39B | Base model |
+| EfficientNet-B4  | 83.0%          | 19M    | 4.2B  | Comparable FLOPs to ResNet-50, but much higher accuracy |
+| EfficientNet-B7  | **84.4%**      | 66M    | 37B   | SOTA performance |
+
+---
+
+### 📈 Key Takeaways from Scaling Results
+
+- **EfficientNet consistently dominates** in both accuracy and FLOPs/params across all scales.
+- Even **EfficientNet-B4**, with only 4.2B FLOPs, outperforms **ResNet-152** (60.2M params, 11.5B FLOPs).
+- The **returns start to diminish** around B6–B7, meaning accuracy gain becomes smaller despite higher computational cost.
+- This confirms the **efficacy of compound scaling** over manual or naive scaling.
+
+---
+
+### 🔍 At What Point Do Returns Diminish?
+
+- **Diminishing returns** refers to the point where adding more FLOPs or parameters gives **less improvement in accuracy**.
+- In EfficientNet, this trend starts appearing **beyond B6**, where the **cost rises faster than the gain**.
+- However, the models still remain **more efficient** than existing baselines even at large scales.
+
+---
+
+### 🧠 Personal Reflection
+
+Today’s section showed that **elegant scaling isn't just theoretical** — it leads to real-world performance gains.  
+It's impressive how EfficientNet can scale up from **tiny mobile models** to **giant server models** using just one method.  
+I especially liked how the authors used a **systematic comparison** with popular baselines to prove the generality of their approach.
