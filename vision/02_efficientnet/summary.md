@@ -301,3 +301,33 @@ This section validates the **effectiveness and generality** of EfficientNet acro
 Today’s section showed that **elegant scaling isn't just theoretical** — it leads to real-world performance gains.  
 It's impressive how EfficientNet can scale up from **tiny mobile models** to **giant server models** using just one method.  
 I especially liked how the authors used a **systematic comparison** with popular baselines to prove the generality of their approach.
+
+## ✅ Day 5 – Conclusion & Personal Takeaway
+
+### 📌 Conclusion Summary
+
+EfficientNet is fundamentally a paper about **scaling methods** for CNNs.  
+Traditional approaches scaled only one dimension at a time — depth, width, or input resolution — but EfficientNet proposes a **compound scaling** method that scales all three simultaneously.  
+This approach proves to be **highly efficient** in terms of both **accuracy and computational cost (FLOPs)**.
+
+---
+
+### 📌 Core Contribution
+
+- Introduces a **systematic, unified scaling method** instead of arbitrary, single-dimension scaling  
+- Achieves **state-of-the-art accuracy** with significantly fewer parameters and FLOPs  
+- Demonstrates scalability from small mobile models to large server-level models using the same principle  
+- Validates compound scaling with both **theoretical constraint** and **empirical results**
+
+---
+
+### 🧠 Personal Reflection
+
+For me, the most meaningful part of EfficientNet is its **practicality under limited resources**.  
+As someone who studies computer vision independently, I often face constraints in computing power.  
+In such situations, achieving high accuracy requires **efficiency, not brute force**.  
+
+EfficientNet offers a well-structured way to get better performance without overloading my hardware —  
+so I expect to **use this model frequently in future projects**.
+
+---
