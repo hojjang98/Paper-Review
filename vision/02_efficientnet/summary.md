@@ -330,4 +330,105 @@ In such situations, achieving high accuracy requires **efficiency, not brute for
 EfficientNet offers a well-structured way to get better performance without overloading my hardware —  
 so I expect to **use this model frequently in future projects**.
 
+--- 
+
+## ✅ Day 6 – My Reproduction Results
+
+### 📌 Objective
+
+To verify the effectiveness of **compound scaling** proposed in the EfficientNet paper, I conducted a comparative experiment using four models:
+
+- `base_model`: EfficientNet-B0 at resolution 224  
+- `depth_model`: Depth scaling only, resolution 256  
+- `width_model`: Width scaling only, resolution 256  
+- `compound_model`: Depth + width + resolution scaling, resolution 300  
+
+All models were trained for **5 epochs** with the same number of parameters (~4M), using identical training configurations (optimizer, loss, augmentation).
+
 ---
+
+### ⚙️ Configuration Summary
+
+| Model Type       | Resolution | FLOPs (MMac) | Params (M) |
+|------------------|------------|--------------|------------|
+| Base (B0)        | 224        | 408.93       | 4.02       |
+| Depth-only       | 256        | 533.91       | 4.02       |
+| Width-only       | 256        | 578.40       | 4.02       |
+| Compound Scaling | 300        | 838.07       | 4.02       |
+
+---
+
+### 📈 Validation Accuracy by Epoch
+
+| Epoch | Base (%) | Depth (%) | Width (%) | Compound (%) |
+|-------|----------|-----------|-----------|--------------|
+| 1     | 91.89    | 93.01     | 91.75     | 92.08        |
+| 2     | 92.94    | 92.41     | 93.45     | 92.81        |
+| 3     | 93.39    | 92.52     | 93.51     | 92.58        |
+| 4     | 93.16    | 93.59     | 93.37     | **93.98**    |
+| 5     | **93.82**| **93.85** | 93.69     | 93.18        |
+
+---
+
+### 🧪 Best Performance Summary
+
+| Model         | Best Val Accuracy | Lowest Val Loss |
+|---------------|-------------------|------------------|
+| Base (B0)     | 93.82%            | 0.2045           |
+| Depth-only    | 93.85%            | **0.1951**       |
+| Width-only    | 93.69%            | 0.1936           |
+| Compound      | **93.98%**        | **0.1924**       |
+
+---
+
+### 🧠 Analysis & Takeaways
+
+- **Compound scaling** model achieved the **highest accuracy** and **lowest validation loss**.
+- **Depth-only** scaling also yielded efficient performance, offering a good trade-off between FLOPs and accuracy.
+- **Width-only** scaling showed decent performance, though some signs of overfitting appeared.
+- The **Base model** (EfficientNet-B0) still performed competitively and converged quickly.
+
+> 📌 These results confirm that **balanced compound scaling** is more effective than scaling along a single axis, aligning well with the conclusions of the original paper.
+
+---
+
+### 📷 Visualizations
+
+Loss and Accuracy plots for each model:
+
+### 📷 Training Curves
+
+**Base Model Accuracy**  
+![base_model_acc](./images/base_model_acc.png)
+
+**Base Model Loss**  
+![base_model_loss](./images/base_model_loss.png)
+
+**Depth-only Accuracy**  
+![depth_model_acc](./images/depth_model_acc.png)
+
+**Depth-only Loss**  
+![depth_model_loss](./images/depth_model_loss.png)
+
+**Width-only Accuracy**  
+![width_model_acc](./images/width_model_acc.png)
+
+**Width-only Loss**  
+![width_model_loss](./images/width_model_loss.png)
+
+**Compound Model Accuracy**  
+![compound_model_acc](./images/compound_model_acc.png)
+
+**Compound Model Loss**  
+![compound_model_loss](./images/compound_model_loss.png)
+
+
+---
+
+### 💡 Reflection
+
+> 💡 Note: While the compound model achieved the best performance, the overall differences between models on CIFAR-10 were relatively small.  
+> This suggests that **compound scaling becomes more important as the task complexity increases**.  
+> On simple datasets like CIFAR-10, even base or shallow models can perform well, masking the real benefits of advanced scaling strategies.  
+> Future experiments on more complex datasets (e.g., CIFAR-100, TinyImageNet, Food-101) could better highlight the advantages of compound scaling.
+
