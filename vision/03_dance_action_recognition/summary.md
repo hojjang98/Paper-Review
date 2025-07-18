@@ -88,3 +88,51 @@ This paper solves this by using **unsupervised 3D pose estimation** and modeling
 This paper builds a clean, lightweight pipeline to classify dance genres from raw video using only 2D pose sequences.
 By lifting them to 3D and using LSTM-based temporal modeling, the method delivers strong recognition performance without appearance-based features or labels.
 A great starting point for building explainable and customizable motion-based recognition systems.
+
+---
+
+## ✅ Day 2 – Computational Approach (Method)
+
+### 📌 Overall Pipeline Steps
+
+1. **2D Pose Estimation**: For each frame \( I(t) \), predict 2D keypoints \( \hat{p}^i(t) \) for each person \( i \)
+2. **Bounding Box Tracking**: Track the rough position of each dancer as bounding boxes \( B^i(t) = (x, y, w, l) \)
+3. **3D Pose Lifting**: Lift the 2D poses into 3D poses \( \hat{P}^i(t) \) using an unsupervised method
+4. **Body Part Motion Modeling**: For each body part \( e \in E \), compute motion sequences \( \hat{y}^e_t \)
+5. **Dance Genre Classification**: Concatenate all body part motion sequences and feed into LSTM to predict genre label \( \hat{g} \)
+
+---
+
+### 📌 Object Tracking (Section 2.1)
+
+- **Problem in prior methods**: Struggle with multi-person occlusion, limited pose diversity, and dependence on single-person datasets
+- **Key contribution**: Propose a 3-stage tracking algorithm to handle dancer overlap robustly
+
+**3-Stage Tracking Process:**
+1. **When no overlap**: Use LDES tracker to follow dancer \( i \), maintain color histogram \( h^i_t \) and bounding box \( B^i_t \)
+2. **When overlap occurs**: Detect it via sharp change in motion direction (tracker failure)
+3. **When overlap ends**: Predict end time and location using velocity before overlap; reassign tracked dancer using best histogram match
+
+→ This allows **robust re-identification and continuous tracking**, even through occlusions
+
+---
+
+### 📌 Tracking-Based 2D Pose Estimation
+
+- Initial 2D poses are extracted using **OpenPose**
+- After overlap, a bounding box may contain multiple 2D pose candidates
+- Select the pose \( p^i_t \) whose histogram most closely matches that of \( p^i_{t-1} \)
+
+---
+
+### ✅ 1-Line Summary
+
+> A robust object tracking strategy that resolves dancer overlap using color histograms, motion prediction, and re-identification after occlusion.
+
+---
+
+### 🤔 Questions / Unclear Parts
+
+- Exact mechanics of the **LDES tracker** (refer to citation [16])
+- How "difference in motion direction" is formally computed to detect tracking failure
+
