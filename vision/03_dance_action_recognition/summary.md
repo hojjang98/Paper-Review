@@ -144,75 +144,75 @@ A great starting point for building explainable and customizable motion-based re
 
 ### 📌 Section 2.2 – 3D Pose Estimation
 
-This section addresses the problem of lifting 2D keypoints \( p_t \) to 3D poses \( \hat{P}_t \) without using ground-truth 3D annotations. Since this is an ill-posed inverse problem, the authors generate multiple 3D pose **seeds** and select the best one using optimization.
+This section addresses the problem of lifting 2D keypoints $p_t$ to 3D poses $\hat{P}_t$ without using ground-truth 3D annotations. Since this is an ill-posed inverse problem, the authors generate multiple 3D pose **seeds** and select the best one using optimization.
 
 #### 🔹 Multi-Seed Strategy & Selection
 
-- Generate \( K \) candidate 3D poses \( \left\{ P_t^K, w_t^K \right\}_{K=1}^{K} \)
+- Generate $K$ candidate 3D poses $\{ P_t^K, w_t^K \}_{K=1}^{K}$
 - Optimize each seed over the time window
 - Select the seed with the lowest cumulative error:
 
-\[
+$$
 k^* = \arg\min_k \sum_t e_t^k
-\]
+$$
 
 - Final 3D output and parameters:
 
-\[
+$$
 \hat{P}_t = P_t^{k^*}, \quad w_t = w_t^{k^*}
-\]
+$$
 
 #### 🔹 Loss Functions
 
 - **2D projection loss**:
 
-\[
+$$
 L_{2D} = \| \hat{p}_t - p_t \|
-\]
+$$
 
 - **2D temporal smoothness**:
 
-\[
+$$
 L_{\text{smooth2D}} = \| \hat{p}_t - \hat{p}_{t-1} \|
-\]
+$$
 
 - **3D temporal smoothness**:
 
-\[
+$$
 L_{\text{smooth3D}} = \| \hat{P}_t - \hat{P}_{t-1} \|
-\]
+$$
 
 - **3D consistency with initial pose**:
 
-\[
+$$
 L_{3D} = \| \hat{P}_t - P_t^* \|
-\]
+$$
 
 ---
 
 ### 📌 Section 2.3 – Body Part Movement Recognition
 
-Each body part \( e \in E \) is modeled with an LSTM to predict basic motion types over time.
+Each body part $e \in E$ is modeled with an LSTM to predict basic motion types over time.
 
 #### 🔹 Input and Output
 
-- **Input**: 3D pose sequences of joints related to part \( e \)
+- **Input**: 3D pose sequences of joints related to part $e$
 
-\[
+$$
 \left\{ \left\{ \hat{p}_t^j \right\}_{j \in J_e} \right\}_{t=0}^{T-1}
-\]
+$$
 
 - **Output**: Multi-label movement predictions
 
-\[
+$$
 \left\{ \hat{y}_t^e \right\}_{t=0}^{T-1}
-\]
+$$
 
 #### 🔹 Loss Function (Binary Cross Entropy)
 
-\[
+$$
 L_{\text{BCE}}^e = \text{BCE}\left( \left\{ \hat{y}_t^e \right\}_{t=0}^{T-1}, \left\{ y_t^e \right\}_{t=0}^{T-1} \right)
-\]
+$$
 
 Each part's movement can belong to multiple motion classes simultaneously, hence the use of multi-label classification.
 
@@ -224,31 +224,30 @@ Finally, another LSTM model takes movement predictions from all body parts to cl
 
 #### 🔹 Input
 
-\[
+$$
 \left\{ \left\{ \hat{y}_t^e \right\}_{t=0}^{T-1} \right\}_{e \in E}
-\]
+$$
 
 #### 🔹 Output
 
 - Final genre prediction from last hidden state:
 
-\[
+$$
 \hat{g} = \text{Softmax}(W h_T + b)
-\]
+$$
 
 #### 🔹 Loss Function (Cross Entropy)
 
-\[
+$$
 L_{\text{genre}} = -\sum_{k=1}^K g_k \log(\hat{g}_k)
-\]
+$$
 
-Where \( g \) is the ground-truth one-hot encoded genre label.
+Where $g$ is the ground-truth one-hot encoded genre label.
 
 ---
 
 ### ✅ 3-Line Summary
 
-- 3D pose is estimated via multi-seed optimization without 3D labels.
-- Each body part's motion is modeled as a multi-label sequence using 3D joint trajectories.
+- 3D pose is estimated via multi-seed optimization without 3D labels.  
+- Each body part's motion is modeled as a multi-label sequence using 3D joint trajectories.  
 - All part-level motions are fused via LSTM to predict the final dance genre.
-
