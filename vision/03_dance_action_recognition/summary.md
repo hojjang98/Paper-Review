@@ -251,3 +251,134 @@ Where $g$ is the ground-truth one-hot encoded genre label.
 - 3D pose is estimated via multi-seed optimization without 3D labels.  
 - Each body part's motion is modeled as a multi-label sequence using 3D joint trajectories.  
 - All part-level motions are fused via LSTM to predict the final dance genre.
+
+
+---
+
+## ✅ Day 4 – Experiments, Results, Conclusion & Future Work
+
+### 📌 3.1 Data & Experimental Setup
+
+#### 🔹 UID (University of Illinois Dance) Dataset
+
+- A curated in-the-wild dance video dataset covering **9 genres**: Ballet, Belly dance, Flamenco, Hip Hop, Rumba, Swing, Tango, Tap, Waltz.
+- Contains both clean tutorial videos and challenging cases with occlusion, background clutter, and lighting variation.
+
+| Attribute | Value |
+|----------|-------|
+| Total Genres | 9 |
+| Total Clips | 1,143 |
+| Total Frames | 2,788,157 |
+| Total Duration | 108,089 seconds |
+| Min / Max Clip Length | 4s / 824s |
+| Min / Max Clips per Class | 30 / 304 |
+
+#### 🔹 AIST++ Dataset
+
+- Large-scale multiview dance dataset with 1,408 sequences from 10 dance genres.
+- Includes 3D keypoint ground-truth and camera parameters.
+- Used for benchmarking 3D pose estimation with MPJPE evaluation.
+
+#### 🔹 Evaluation Metrics
+
+- **MPJPE (Mean Per Joint Position Error)** – measures 3D pose accuracy.
+- **F-score** – used for both movement recognition and genre classification.
+
+---
+
+### 📌 3.2 3D Pose Estimation Results
+
+#### 🔹 MPJPE on AIST++
+
+| Method | Supervision | Extra Data | MPJPE ↓ |
+|--------|-------------|------------|---------|
+| Martinez [ICCV'17] | Supervised | – | 110.0 |
+| Wandt [CVPR'19] | Supervised | – | 323.7 |
+| Pavllo [CVPR'19] | Supervised | – | 77.6 |
+| Pavllo (semi-sup.) | Semi-supervised | ✖ | 446.1 |
+| **Ours (semi-sup.)** | Semi-supervised | ✖ | **73.7** |
+| Zhou [ICCV'17] | Weakly-supervised | ✔ | 93.1 |
+| Kocabas [CVPR'19] | Self-supervised | Multiview | 87.4 |
+| **Ours (unsupervised)** | Unsupervised | ✖ | 246.4 |
+
+➡️ Our **semi-supervised** variant achieves the best performance among all methods.  
+➡️ Even the **unsupervised** version is competitive against state-of-the-art models.
+
+#### 🔹 MPJPE on Human3.6M
+
+| Method | Supervision | Extra Data | MPJPE ↓ |
+|--------|-------------|------------|---------|
+| Pavllo [CVPR'19] | Supervised | – | **46.8** |
+| Martinez [ICCV'17] | Supervised | – | 87.3 |
+| Zanfir [CVPR'18] | Supervised | – | 69.0 |
+| **Ours (semi-sup.)** | Semi-supervised | ✖ | **47.3** |
+| Kocabas [CVPR'19] | Self-supervised | Multiview | 60.6 |
+| Chen [CVPR'19] | Unsupervised | ✔ | 68.0 |
+| Kundu [ECCV'20] | Unsupervised | ✔ | 67.9 |
+| **Ours (unsupervised)** | Unsupervised | ✖ | 82.1 |
+
+➡️ Our semi-supervised method nearly matches the best fully supervised result.
+
+---
+
+### 📌 3.3 Movement & Genre Recognition (on UID Dataset)
+
+#### 🔹 Body Part Movement Recognition (F-score)
+
+| Body Part | 2D Pose | 3D Pose |
+|-----------|---------|---------|
+| Head | 0.93 | **0.97** |
+| Left Shoulder | **0.95** | 0.93 |
+| Right Shoulder | 0.96 | 0.96 |
+| Left Arm | 0.96 | 0.96 |
+| Right Arm | 0.89 | **0.94** |
+| Torso | 0.91 | **0.93** |
+| Hips | 0.81 | **1.00** |
+| Left Leg | 0.96 | 0.98 |
+| Right Leg | 0.94 | 0.95 |
+| Left Foot | 0.85 | **0.98** |
+| Right Foot | **1.00** | 0.99 |
+
+➡️ 3D poses generally improve motion recognition, especially for lower-body parts.
+
+#### 🔹 Dance Genre Classification (F-score)
+
+| Input Type | F-score |
+|------------|---------|
+| 2D Pose Only | 0.44 |
+| 3D Pose Only | 0.47 |
+| Movements (from 2D Pose) | 0.50 |
+| Movements (from 3D Pose) | 0.55 |
+| 2D Pose + Movements (2D) | 0.73 |
+| **3D Pose + Movements (3D)** | **0.86** |
+
+➡️ Best performance is achieved when both **3D pose features and inferred movements** are used together.
+
+---
+
+### 📌 Conclusion & Future Work
+
+#### 🔹 Key Insights
+
+- The proposed pipeline mirrors expert reasoning: from video → pose → part movements → genre.
+- It performs well even under **unsupervised** or **semi-supervised** settings.
+- The hierarchical decomposition offers both strong **recognition performance** and **explainability**.
+
+#### 🔹 Limitations
+
+- The pipeline is **not fully unsupervised** – genre classification still requires labeled data.
+- Performance may degrade when dancers are small in the frame or heavily occluded.
+
+#### 🔹 Future Directions
+
+- Develop a **fully unsupervised end-to-end framework** for pose estimation and genre recognition.
+- Use the extracted motion representations to **synthesize new dance sequences**.
+- Evaluate synthesized dances via **expert judge ratings** to assess quality and realism.
+
+---
+
+### ✅ 3-Line Summary
+
+- The method achieves strong 3D pose estimation and genre classification results without relying on ground-truth labels or RGB features.
+- It benefits greatly from hierarchical modeling and body-part decomposition.
+- The framework is highly applicable to real-world, custom-collected, and label-scarce dance video data.
