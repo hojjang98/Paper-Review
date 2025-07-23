@@ -382,3 +382,34 @@ Where $g$ is the ground-truth one-hot encoded genre label.
 - The method achieves strong 3D pose estimation and genre classification results without relying on ground-truth labels or RGB features.
 - It benefits greatly from hierarchical modeling and body-part decomposition.
 - The framework is highly applicable to real-world, custom-collected, and label-scarce dance video data.
+
+---
+
+## ✅ Day 5 – From Paper to Practice: First Implementation
+
+### 🛠️ My Goal
+
+Inspired by the HDVR paper, I wanted to begin building my **own version** of the pipeline, starting with feature extraction from pose keypoints.  
+Since I don’t have 3D labels or clean multiview datasets, I focus on the **2D-to-feature** part as a starting point.
+
+### 📂 File: `2D_Pose_Feature_Builder.ipynb`
+
+This notebook implements the **first stage** of the HDVR pipeline:
+- Input: pre-extracted 2D pose keypoints (from MediaPipe or OpenPose)
+- Output: frame-level features like joint angles, velocities, and distances
+- Also includes: simple dancer ID tracking logic and motion plotting tools
+
+### 🧩 What I Learned
+
+- Even basic joint distances/angles encode a lot of motion information
+- Temporal smoothing is crucial for noisy keypoints (especially feet/hands)
+- Some joints are more stable than others; torso vs. wrists behave very differently
+- OpenPose/BlazePose formats need standardization for consistent feature pipelines
+
+### 🔜 Next Steps
+
+- Segment motion into clips and test LSTM or TCN for genre prediction
+- Consider extending to 3D lifting with unsupervised constraints
+- Add visualization tools for debugging movement classes
+
+---
