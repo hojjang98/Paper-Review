@@ -1,0 +1,58 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Hidden system files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.venv/
+env/
+venv/
+Pipfile.lock
+
+# Output / results / logs
+*.log
+*.out
+*.bak
+*.tmp
+*.swp
+*.csv
+*.tsv
+*.h5
+*.pth
+*.pt
+*.ckpt
+
+# VSCode
+.vscode/
+
+# Results and cache
+runs/
+logs/
+checkpoints/
+.cache/
+*.cache
+
+# Images and videos
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.avi
+
+# Ignore model folders (unless manually included)
+model/
+models/
+weights/
+
+# Misc
+*.~ipynb
+*.pdf

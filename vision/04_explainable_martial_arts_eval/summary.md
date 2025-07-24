@@ -47,12 +47,12 @@ This paper proposes a solution that:
 
 ### 📌 Main Contributions
 
-- **Alignment o highlight which skeletal joints/movements influenced the model’s score the most.
+- **Alignment Module**: Combines **Procrustes Analysis** and **DTW (Dynamic Time Warping)** to temporally and spatially align movement data.
+- **Multi-model Evaluation**: Trains several ML models (e.g., Decision Trees, Logistic Regression, LSTM) to assess motion quality.
+- **Explainable Output**: Uses **SHAP** (Shapley Additive Explanations) to highlight which skeletal joints/movements influenced the model’s score the most.
 
 ---
-Module**: Combines **Procrustes Analysis** and **DTW (Dynamic Time Warping)** to temporally and spatially align movement data.
-- **Multi-model Evaluation**: Trains several ML models (e.g., Decision Trees, Logistic Regression, LSTM) to assess motion quality.
-- **Explainable Output**: Uses **SHAP** (Shapley Additive Explanations) t
+
 ### 📌 High-Level Architecture
 
 1. **Data Collection**  
