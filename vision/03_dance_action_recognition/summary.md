@@ -74,3 +74,19 @@ This paper proposes an explainable evaluation framework that compares a trainee�
 
 ---
 
+### 🧩 From Paper to Practice
+
+I found this paper particularly compelling because it directly supports the kind of work I want to pursue: using **pose-based motion analysis not just for recognition, but for quantitative and explainable assessment**.
+
+> That’s why I decided to turn this paper into a hands-on coding experiment.
+
+I've started implementing a simplified version of the system described here — beginning with 2D pose alignment, DTW-based comparison, and basic score visualization.  
+This is now being actively developed as a **personal project**, and I'm gradually adding more features such as:
+
+- Real-time similarity tracking from webcam or pre-recorded video  
+- Motion feedback system with visual overlays  
+- Score interpretation with body-part relevance  
+- Extension from martial arts to dance or exercise routines  
+
+This paper essentially laid the foundation for what could become my first full **pose-based evaluation system**.
+

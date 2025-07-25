@@ -39,16 +39,16 @@ This paper proposes a solution that:
 
 ### 📌 Key Questions Addressed
 
-1. How can we **align** skeleton-based movement sequences effectively between performers and reference templates?
-2. Can **machine learning models** be trained to assess martial arts skill based on aligned motion data?
+1. How can we **align** skeleton-based movement sequences effectively between performers and reference templates?  
+2. Can **machine learning models** be trained to assess martial arts skill based on aligned motion data?  
 3. Is it possible to **explain** which body parts or movement patterns affected the final score?
 
 ---
 
 ### 📌 Main Contributions
 
-- **Alignment Module**: Combines **Procrustes Analysis** and **DTW (Dynamic Time Warping)** to temporally and spatially align movement data.
-- **Multi-model Evaluation**: Trains several ML models (e.g., Decision Trees, Logistic Regression, LSTM) to assess motion quality.
+- **Alignment Module**: Combines **Procrustes Analysis** and **DTW (Dynamic Time Warping)** to temporally and spatially align movement data.  
+- **Multi-model Evaluation**: Trains several ML models (e.g., Decision Trees, Logistic Regression, LSTM) to assess motion quality.  
 - **Explainable Output**: Uses **SHAP** (Shapley Additive Explanations) to highlight which skeletal joints/movements influenced the model’s score the most.
 
 ---
@@ -56,13 +56,13 @@ This paper proposes a solution that:
 ### 📌 High-Level Architecture
 
 1. **Data Collection**  
-   - Skeleton sequences from both martial arts experts (reference) and trainees (to be evaluated)
+   - Skeleton sequences from both martial arts experts (reference) and trainees (to be evaluated)  
 2. **Preprocessing**  
-   - Interpolation → Normalization → Procrustes + DTW alignment
+   - Interpolation → Normalization → Procrustes + DTW alignment  
 3. **Model Training**  
-   - Feed aligned features into ML models
+   - Feed aligned features into ML models  
 4. **Scoring**  
-   - Output quantitative score (regression or classification)
+   - Output quantitative score (regression or classification)  
 5. **Explainability**  
    - Visualize contribution of different joints using SHAP
 
@@ -74,3 +74,82 @@ This paper proposes an explainable evaluation framework that compares a trainee�
 
 ---
 
+## ✅ Day 2 – Related Work & Method Overview
+
+### 📚 Literature Review
+
+#### 🔹 Motion Capture in Martial Arts  
+Motion capture methods are divided into **wearable** and **markerless** types.  
+- **Wearable methods**: Infrared-based (accurate but limited to indoor), IMU-based (more portable but limited sensors).  
+- **Markerless methods**: RGB-D sensors (e.g., Kinect) and 2D/3D human pose estimation using RGB (e.g., OpenPose, HRNet, BlazePose GHUM).  
+
+BlazePose GHUM allows monocular 3D pose estimation and is especially useful in sports scenarios.
+
+---
+
+#### 🔹 Martial Arts Movement Quality Assessment  
+Three main approaches have been used in previous studies:
+
+1. **Rule-Based**  
+   - Predefined thresholds based on expert knowledge  
+   - Easy to understand but hard to generalize  
+
+2. **Similarity Metrics**  
+   - Measures distance between user and reference movements (e.g., DTW, Euclidean, Cosine)  
+   - Gives a numeric score but lacks interpretability  
+
+3. **Model-Based**  
+   - Machine learning regressors or classifiers  
+   - Better performance but typically black-box  
+   - Includes linear regression, SVM, Lasso, and ensemble models
+
+---
+
+### ⚙️ Method Overview
+
+#### 🔹 Skeleton Feature Extraction  
+- MediaPipe is used to extract 3D skeleton coordinates (33 joints).  
+- 18 body angles are calculated to describe posture:  
+  - Includes shoulder, elbow, hip, knee, and trunk angles  
+- Each angle is computed using:  
+  \\[ A_i = \arccos \left( \frac{\vec{v_1} \cdot \vec{v_2}}{|\vec{v_1}||\vec{v_2}|} \right) \cdot \frac{180}{\pi} \\]
+
+---
+
+#### 🔹 Feature Alignment  
+- Uses **Dynamic Time Warping (DTW)** to align each subject’s motion to a 32-frame action template (sampled from top scorer).  
+- Handles differences in movement speed and rhythm through time series warping.
+
+---
+
+#### 🔹 Regression & Ensemble  
+- Base models: Linear Regression, Lasso, SVM, Decision Tree, Random Forest, KNN, Bagging  
+- Final output uses **adaptive weighted averaging**:  
+  - Models with **lower RMSE** get **higher weight**  
+  - Final score is a **weighted sum** of base model outputs
+
+---
+
+#### 🔹 Explainability (SHAP)  
+- SHAP is used to interpret both **global** and **local** contributions:  
+  - Global: Which features matter most overall  
+  - Local: Why a specific motion got a particular score
+
+---
+
+### 🧪 Datasets Used
+
+| Dataset         | Description |
+|----------------|-------------|
+| **XSQ**         | Xingshen Quan (Long Fist routine, filmed by authors)  
+| **PBB**         | Plum Blossom Boxing (traditional martial art, heritage-listed)  
+| **UMONS-TaiChi**| Public 3D Tai Chi dataset using Kinect (25 joints, depth-based)
+
+---
+
+### 📌 TL;DR Summary
+
+The paper presents a novel framework that combines skeleton-based motion analysis, alignment techniques, multiple regression models, and SHAP explanations to evaluate martial arts skill objectively.  
+It addresses limitations of subjective scoring and opens new directions for intelligent feedback in training and education.
+
+---
