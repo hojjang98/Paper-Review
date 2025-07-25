@@ -111,8 +111,12 @@ Three main approaches have been used in previous studies:
 - MediaPipe is used to extract 3D skeleton coordinates (33 joints).  
 - 18 body angles are calculated to describe posture:  
   - Includes shoulder, elbow, hip, knee, and trunk angles  
-- Each angle is computed using:  
-  \\[ A_i = \arccos \left( \frac{\vec{v_1} \cdot \vec{v_2}}{|\vec{v_1}||\vec{v_2}|} \right) \cdot \frac{180}{\pi} \\]
+- Each angle is computed using:
+
+$$
+A_i = \arccos \left( \frac{\vec{v_1} \cdot \vec{v_2}}{|\vec{v_1}||\vec{v_2}|} \right) \cdot \frac{180}{\pi}
+$$
+
 
 ---
 
