@@ -157,3 +157,83 @@ The paper presents a novel framework that combines skeleton-based motion analysi
 It addresses limitations of subjective scoring and opens new directions for intelligent feedback in training and education.
 
 ---
+
+## ✅ Day 3 – Implementation Details: Alignment, Regression Ensemble, and Explainability
+
+### 🔧 1. Skeleton Feature Extraction
+
+- The system extracts 33 3D joint coordinates using **MediaPipe**.
+- From these, 18 joint angles are computed to represent body posture.
+- Each angle is calculated as:
+
+$$
+A_i = \arccos \left( \frac{\vec{v_1} \cdot \vec{v_2}}{|\vec{v_1}||\vec{v_2}|} \right) \cdot \frac{180}{\pi}
+$$
+
+- These angles include joints from upper limbs (shoulder, elbow), lower limbs (hip, knee), and trunk (torso twists), capturing both local and global posture features.
+
+---
+
+### 📐 2. Feature Alignment
+
+- To reduce variation caused by different body types, movement speeds, or execution styles, the authors apply **two alignment steps**:
+
+#### 🔹 Procrustes Analysis (Spatial Alignment)
+- Normalizes for scale, rotation, and translation.
+- Aligns skeletons from different individuals into a shared coordinate space.
+
+#### 🔹 Dynamic Time Warping (Temporal Alignment)
+- Handles different motion speeds and sequence lengths.
+- Each sequence is warped to a 32-frame reference template (sampled from top performers).
+- This allows fair comparison regardless of timing differences.
+
+---
+
+### 🧠 3. Regression Models + Adaptive Ensemble
+
+- Seven base regressors are used:  
+  **Linear Regression**, **Lasso**, **SVM**, **Decision Tree**, **Random Forest**, **KNN**, **Bagging**
+
+- Final prediction is obtained by **adaptive weighted averaging** based on model RMSEs:
+
+Weights are computed as:
+
+$$
+w_i' = \left( e^{|\text{RMSE}_i - \text{RMSE}_{\max}|} \right)^k
+$$
+
+$$
+w_i = \frac{w_i'}{\sum_j w_j'}
+$$
+
+Final score is:
+
+$$
+\hat{y}_{\text{final}} = \sum_i w_i \cdot \hat{y}_i
+$$
+
+- This ensures that models with lower RMSE contribute more to the final prediction.
+
+---
+
+### 💡 4. Explainability via SHAP
+
+- To make the system interpretable, SHAP is applied to the final regression output.
+- SHAP provides:
+  - **Global explanations**: which joint angles contribute most across all predictions
+  - **Local explanations**: which angles affected a specific person’s score
+
+- This enables feedback such as:
+  - “Left calf angle at frame 21 reduced your score”
+  - “Right thigh angle improved the overall score”
+
+---
+
+### 📌 Summary
+
+This stage of the paper builds a full end-to-end pipeline:
+
+> **Skeleton angles → Alignment (space/time) → Multi-model regression → Weighted prediction → SHAP-based explainability**
+
+The approach not only predicts accurate skill scores, but also explains *why* a specific movement received that score, making it useful for both learners and instructors.
+
