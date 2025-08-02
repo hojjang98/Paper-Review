@@ -237,3 +237,98 @@ This stage of the paper builds a full end-to-end pipeline:
 
 The approach not only predicts accurate skill scores, but also explains *why* a specific movement received that score, making it useful for both learners and instructors.
 
+---
+
+## ✅ Day 4 – Experiments, Results, and Interpretability
+
+### 🧪 Evaluation Setup
+
+To assess model performance, the authors used the following metrics:
+
+- **MAE (Mean Absolute Error)**: Measures average absolute difference between prediction and ground truth  
+- **RMSE (Root Mean Squared Error)**: Penalizes large errors more than MAE  
+- **sMAPE (Symmetric Mean Absolute Percentage Error)**: Scales error relative to prediction and target  
+- **R² (Coefficient of Determination)**: Indicates how well model predictions explain the variance in data  
+- **ρ (Pearson Correlation)**: Measures linear correlation between predicted and true scores  
+- **ICC (Intraclass Correlation Coefficient)**: Assesses agreement with expert scores
+
+Due to the limited size of the datasets, **Leave-One-Out Cross Validation (LOOCV)** was used.
+
+---
+
+### 🔬 Ablation Study – Feature Alignment & Ensemble Effect
+
+Results show that **feature alignment** consistently improves performance across all regressors.  
+The **Adaptive Weighted Averaging** approach achieved the best scores overall.
+
+| Model     | MAE (XSQ / TaiChi / PBB) |
+|-----------|--------------------------|
+| Linear    | 0.283 / 0.585 / 0.290     |
+| RF        | 0.276 / 0.548 / 0.295     |
+| SVM       | 0.275 / 0.546 / 0.261     |
+| **Proposed** | **0.237 / 0.290 / 0.261** |
+
+- On the **XSQ** and **PBB** datasets, the proposed model even outperforms human experts in terms of MAE.
+- In **TaiChi**, human raters still perform better due to the fine granularity of skilled motions.
+
+---
+
+### 📊 Comparison with Experts and SOTA Methods
+
+| Dataset | MAE (Proposed) | MAE (Expert Avg) | R² (Proposed) | R² (Expert) |
+|---------|----------------|------------------|----------------|-------------|
+| XSQ     | **0.237**      | 0.371–0.420       | 0.633         | 0.659–0.707 |
+| PBB     | **0.261**      | 0.319–0.457       | 0.557         | 0.265–0.499 |
+| TaiChi  | 0.290          | **0.130–0.270**   | 0.844         | **0.948–0.974** |
+
+The method demonstrates expert-level or better performance on some datasets (XSQ, PBB), though falls short for TaiChi, where nuanced precision is required.
+
+---
+
+### 💡 Explainability – SHAP Analysis
+
+#### 🔹 Global SHAP
+
+- Top influential frames: 13–17, 19–23, and 31  
+- SHAP summary plots identify joint angles that most strongly affect the overall score  
+- Heatmap-based clustering groups users by performance style, enabling class-based instruction
+
+#### 🔹 Local SHAP
+
+- Waterfall plots show how each joint’s posture in specific frames contributes positively or negatively to the score  
+- Example feedback:  
+  - “Left calf angle in frame 21 decreased the score”  
+  - “Right thigh alignment in frame 20 increased the score”  
+- Partial dependency plots suggest the optimal range for specific angles to avoid deductions
+
+---
+
+### 🧠 Discussion & Reflections
+
+#### ✅ Strengths
+- **Alignment module** eliminates speed and rhythm variance  
+- **Adaptive ensemble** increases prediction robustness  
+- **SHAP-based interpretability** offers actionable, transparent feedback  
+- Model performance rivals experts in most practical cases
+
+#### ⚠️ Limitations
+- TaiChi dataset reveals that expert judgment is still more reliable in nuanced motions  
+- Real-world application requires scalable data collection and fine-tuning per domain
+
+#### 🔮 Future Directions
+- Expand to more martial arts and movement types  
+- Incorporate domain-specific knowledge or biomechanics  
+- Enable real-time feedback for coaching/training  
+- Track skill improvement over time (longitudinal modeling)
+
+---
+
+### 📌 Final Summary
+
+> This study proposes an end-to-end pipeline for **quantitative, interpretable martial arts scoring**,  
+> combining skeleton-based motion analysis, alignment, regression ensembles, and SHAP-based feedback.  
+> It not only predicts how well a movement is performed, but also *why* it got that score —  
+> paving the way for intelligent, fair, and human-friendly motion evaluation systems.
+
+---
+
