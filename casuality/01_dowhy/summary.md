@@ -89,3 +89,55 @@ DoWhy tackles this by making all assumptions **explicit**, **testable**, and **r
 > This paper introduced a powerful mental model for thinking about causality.  
 > Tomorrow I’ll dive into the implementation logic and real-world applications.
 
+## ✅ Day 2 – Implementation & Applications
+
+### 📌 DoWhy Pipeline in Code
+
+DoWhy’s 4-stage pipeline (Model → Identify → Estimate → Refute) is implemented via the `CausalModel` class.  
+It provides a structured interface for defining causal assumptions and testing them directly in Python.
+
+The process is as follows:
+1. **Modeling**: Define treatment, outcome, and confounders in a causal graph  
+2. **Identification**: Verify if the effect can be estimated (e.g., via backdoor criterion)  
+3. **Estimation**: Compute the causal effect using statistical or ML estimators  
+4. **Refutation**: Test robustness through counterfactual simulations (e.g., placebo treatment)
+
+---
+
+### 📌 Example API Flow (No Code Here)
+
+- You instantiate a `CausalModel` with your dataset and variables  
+- Then, call `identify_effect()` to retrieve the estimand  
+- Next, use `estimate_effect()` with a chosen method (like linear regression or matching)  
+- Finally, test robustness with `refute_estimate()` using techniques like placebo or data subsetting
+
+The entire pipeline encourages **explicit causal thinking**, even if your estimator is a simple regression model.
+
+---
+
+### 📊 Applications from the Paper
+
+The authors showcase DoWhy through use cases like:
+- **Medical**: Smoking → Lung cancer  
+- **Education**: Online course participation → Exam performance  
+- **Policy**: Program participation → Employment outcome
+
+In each case, the framework enforces clear assumptions and encourages reproducibility by combining identification logic with statistical estimation and robustness testing.
+
+---
+
+### 📌 Notable Points
+
+- DoWhy doesn’t replace causal reasoning — it **makes it executable**  
+- The same causal pipeline can use different estimators (OLS, forest, IV, etc.)  
+- Refutation is built-in, encouraging skepticism of any single result
+
+---
+
+### 🧠 Final Thoughts
+
+This part of the paper showed that DoWhy is not just a library — it’s a **philosophy made runnable**.  
+It rewards those who think structurally, and penalizes those who skip assumptions.
+
+By separating **what we assume**, **what we compute**, and **what we test**,  
+it provides a level of rigor that most ML pipelines still lack.
