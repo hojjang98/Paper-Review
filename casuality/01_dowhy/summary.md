@@ -171,7 +171,6 @@ and then assess the robustness of that estimate using placebo and subset refutat
 
 #### ✅ Refute: Placebo Treatment
 
-```text
 Estimated effect:      9.9995  
 New effect (placebo):  0.0038  
 p-value:               0.86
