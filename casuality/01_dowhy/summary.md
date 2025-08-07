@@ -190,6 +190,8 @@ This suggests the effect is stable and generalizable across different samples.
 
 📈 Visual Summary
 
+![Effect Estimates Comparison](https://github.com/hojjang98/Paper-Review/blob/main/casuality/01_dowhy/do_why_graph.png?raw=true)  
+
 Bar chart comparing Naive Regression, DoWhy Estimate, and two refutation tests.
 
 🧠 Final Thoughts
