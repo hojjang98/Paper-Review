@@ -141,3 +141,69 @@ It rewards those who think structurally, and penalizes those who skip assumption
 
 By separating **what we assume**, **what we compute**, and **what we test**,  
 it provides a level of rigor that most ML pipelines still lack.
+
+## ✅ Day 3 – Causal Estimation in Action (w/ Refutation Tests)
+
+Today I tested the full DoWhy pipeline on a synthetic dataset.  
+The goal was to compare a naive correlation-based estimate with a true causal estimate,  
+and then assess the robustness of that estimate using placebo and subset refutation methods.
+
+---
+
+### 📌 Experimental Setup
+
+- **Dataset**: Synthetic data with binary treatment, linear outcome, and 4 confounders  
+- **True Causal Effect** (ground truth): set to β = 10  
+- **Goal**: Estimate β using both naive regression and DoWhy, then evaluate robustness
+
+---
+
+### 📊 Step-by-Step Results
+
+| Method | Estimated Effect | Notes |
+|--------|------------------|-------|
+| **Naive Linear Regression** | 15.48 | Overestimates due to unadjusted confounding |
+| **DoWhy (Backdoor + Linear Regression)** | **9.9995** | Effect after adjusting for W0 ~ W3 |
+
+---
+
+### 🔍 Refutation Test Results
+
+#### ✅ Refute: Placebo Treatment
+
+```text
+Estimated effect:      9.9995  
+New effect (placebo):  0.0038  
+p-value:               0.86
+
+→ When the treatment is replaced with a random variable, the estimated effect vanishes.
+This indicates the original causal effect was not due to chance — a strong positive sign.
+
+✅ Refute: Subset of Data
+
+Estimated effect:      9.9995  
+New effect (subset):   9.9995  
+p-value:               0.92
+
+→ Even when using a random subset of the data, the effect remains virtually identical.
+This suggests the effect is stable and generalizable across different samples.
+
+📈 Visual Summary
+
+Bar chart comparing Naive Regression, DoWhy Estimate, and two refutation tests.
+
+🧠 Final Thoughts
+This experiment showed how naive analysis can overestimate effects,
+and how DoWhy enables more disciplined and robust causal inference.
+
+Refutation results further support that the estimated effect is:
+
+✅ Not spurious (Placebo test)
+
+✅ Not sample-dependent (Subset test)
+
+
+
+
+
+
