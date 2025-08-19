@@ -137,3 +137,27 @@ Only embeddings are trained; all other model parameters remain frozen.
 ### 📌 Conclusion (Day 3)
 The few-shot embedding adaptation provides **strong improvements** with minimal labeled data.  
 It simplifies the pipeline by removing prompt engineering and proves practical in **data-scarce domains** like agriculture and remote sensing.
+
+## ✅ Day 4 – Conclusion & Future Work  
+
+### 📌 Conclusion  
+- This paper proposed a **few-shot embedding adaptation** method for Grounding DINO, tailored to the agricultural domain.  
+- By replacing text prompts with **class-specific learnable embeddings**, the approach removes the burden of prompt engineering and maximizes **data efficiency**.  
+- Across multiple agricultural datasets and remote sensing benchmarks, the method achieved **clear improvements** over both zero-shot and full fine-tuning baselines.  
+- Especially in cluttered or complex scenes where zero-shot fails, few-shot adaptation delivered stable and strong performance.  
+
+---
+
+### 📌 Limitations  
+- In **1-shot settings**, performance can even fall below zero-shot due to insufficient coverage → at least 2 labeled samples per class are required.  
+- Since only embeddings are updated while all other parameters remain frozen, there are still limitations in **very complex visual recognition tasks**.  
+- Sensitivity to **hyperparameter choices** (e.g., number of embeddings per class, initialization strategies) may affect results.  
+
+---
+
+### 📌 Future Work  
+- **Cross-domain extension**: Validate beyond agriculture and remote sensing, e.g., in **medical imaging** or other data-scarce domains.  
+- **Embedding structure improvement**: Explore hierarchical embeddings or multimodal fusion instead of simple class tokens.  
+- **Instance segmentation / temporal tasks**: Extend from SAM2-based segmentation to **video-based action or temporal analysis**.  
+- **Hybrid fine-tuning**: Combine embedding adaptation with partial network fine-tuning for further performance gains.  
+
