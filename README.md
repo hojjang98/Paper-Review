@@ -40,6 +40,31 @@ Each review typically includes:
 
 ---
 
+## 📂 Repository Structure
+
+### 🔗 Causality
+- [01_dowhy](./causality/01_dowhy/summary.md)  
+  *DoWhy: An End-to-End Library for Causal Inference* (NeurIPS 2020 Workshop)  
+  Includes: Summary (multi-day notes), implementation notebook, refutation experiments
+
+### 🔗 Vision
+- [01_mobilenetv2](./vision/01_mobilenetv2/summary.md)  
+  *MobileNetV2: Inverted Residuals and Linear Bottlenecks* (CVPR 2018)  
+
+- [02_efficientnet](./vision/02_efficientnet/summary.md)  
+  *EfficientNet: Rethinking Model Scaling for CNNs* (ICML 2019)  
+
+- [03_dance_action_recognition](./vision/03_dance_action_recognition/summary.md)  
+  *Action Recognition using Pose Estimation* (2019)  
+
+- [04_explainable_martial_arts_eval](./vision/04_explainable_martial_arts_eval/summary.md)  
+  *Explainable Quality Assessment of Skeletal Representations for Martial Arts Movements* (2024)  
+
+- [05_few_shot_grounding_dino_agri](./vision/05_few_shot_grounding_dino_agri/summary.md)  
+  *Few-Shot Grounding DINO for Agriculture* (2023)  
+
+---
+
 ## 🛠️ Future Plans
 
 - 📌 Aim to review at least one paper per week  
