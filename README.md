@@ -63,6 +63,12 @@ Each review typically includes:
 - [05_few_shot_grounding_dino_agri](./vision/05_few_shot_grounding_dino_agri/summary.md)  
   *Few-Shot Grounding DINO for Agriculture* (2023)  
 
+### 🔗 Transformers
+- [01_attention_is_all_you_need](./transformers/01_attention_is_all_you_need/summary.md)  
+  *Attention Is All You Need* (NeurIPS 2017)  
+  Includes: Day-by-day summaries (abstract, method, experiments, conclusion), math notes, and implementation details
+
+
 ---
 
 ## 🛠️ Future Plans
