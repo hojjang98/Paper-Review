@@ -69,3 +69,93 @@ Trained progressively via masked modeling + contrastive alignment + next-token p
 it achieves SOTA across a wide range of video-language tasks.  
 
 ---
+
+
+## ✅ Day 2 – Architecture & Method  
+
+### 📌 Overview  
+InternVideo2 builds upon InternVideo (v1) but introduces a **unified spatial–temporal–multimodal architecture** capable of handling visual, textual, and auditory inputs within a single framework.  
+The architecture is composed of four major components:  
+
+1. **Spatial-Temporal Backbone (ST-Backbone)**  
+2. **Cross-Modal Fusion Module (CMFM)**  
+3. **Temporal Modeling Layer**  
+4. **Multitask Pretraining Heads**
+
+---
+
+### 🧩 1. Spatial–Temporal Backbone  
+- Based on **ViT/TimeSformer-like architecture**, extended to handle spatiotemporal tokens.  
+- Each video clip is divided into **3D patches** (spatial + temporal cubes).  
+- The model applies **spatial attention within each frame**, and **temporal attention** across frames.  
+- Enables efficient long-range temporal modeling through **factorized attention** (space × time).  
+
+\[
+x_{t} = \text{TemporalAttention}(\text{SpatialAttention}(x_{t-1}))
+\]
+
+This design preserves local motion while maintaining global consistency across video sequences.  
+
+---
+
+### 🔄 2. Cross-Modal Fusion Module (CMFM)  
+- Key innovation: allows **video, text, audio, and speech embeddings** to interact.  
+- Uses **multi-modal attention blocks**, where each modality can attend to the others via **shared latent space**.  
+- Implements **gated fusion** to control cross-modal influence dynamically.  
+
+\[
+z = \text{Gate}(\text{Attention}(V, T, A, S))
+\]
+
+where \(V, T, A, S\) are video, text, audio, and speech embeddings, respectively.  
+
+**Purpose:** builds rich semantic alignment across modalities — crucial for tasks like captioning and dialogue.  
+
+---
+
+### 🕒 3. Temporal Modeling Strategy  
+- Introduces a **Hierarchical Temporal Encoder (HTE)** for understanding long-range motion.  
+- Videos are chunked into temporal windows → encoded → aggregated at higher levels.  
+- This structure scales efficiently to **long videos** without quadratic attention cost.  
+- Similar in spirit to **Temporal Pyramid Networks**, but integrated into the backbone.  
+
+---
+
+### 🎯 4. Multi-Task Pretraining Heads  
+Each pretraining task connects to the shared backbone via lightweight task heads:  
+
+| Task | Objective | Description |
+|------|------------|-------------|
+| **Masked Video Modeling (MVM)** | Reconstruction | Predict masked patches → robust spatiotemporal representation |
+| **Contrastive Learning** | Alignment | Match video ↔ text ↔ audio ↔ speech embeddings |
+| **Next-Token Prediction** | Generation | Enable multimodal reasoning & video captioning |
+| **Action Classification** | Supervised | Optional task for temporal discrimination |
+
+These tasks are **trained progressively** rather than jointly to stabilize optimization.
+
+---
+
+### ⚙️ Training Flow Summary  
+1. **Stage 1 – MVM:** Learn general motion & appearance understanding.  
+2. **Stage 2 – Contrastive:** Align multimodal representations.  
+3. **Stage 3 – Next-token prediction:** Learn generative reasoning and dialogue ability.  
+
+---
+
+### 🧱 Architecture Diagram (Simplified)
+
+Video Frames → 3D Patch Embed → ST-Backbone → CMFM (Video/Text/Audio)
+↘──────────────↙
+Multi-task Heads (MVM / Contrastive / Generation)
+
+
+---
+
+### 📌 Key Takeaways  
+- Unified architecture merges **space, time, and modality** within one Transformer-based backbone.  
+- **Progressive training** helps the model move from perception → alignment → reasoning.  
+- Enables scalability up to **6B parameters** while maintaining efficiency via hierarchical design.  
+
+---
+
+
