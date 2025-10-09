@@ -142,15 +142,6 @@ These tasks are **trained progressively** rather than jointly to stabilize optim
 
 ---
 
-### 🧱 Architecture Diagram (Simplified)
-
-Video Frames → 3D Patch Embed → ST-Backbone → CMFM (Video/Text/Audio)
-↘──────────────↙
-Multi-task Heads (MVM / Contrastive / Generation)
-
-
----
-
 ### 📌 Key Takeaways  
 - Unified architecture merges **space, time, and modality** within one Transformer-based backbone.  
 - **Progressive training** helps the model move from perception → alignment → reasoning.  
